@@ -77,16 +77,27 @@ def get_learning_quiz():
 from database import get_connection
 
 @app.get("/learning-quiz")
-def get_learning_quiz():
+def get_learning_quiz(category: str = None, difficulty: str = None):
 
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("""
+    query = """
         SELECT *
         FROM Learning_Quiz
-        LIMIT 30
-    """)
+        WHERE 1=1
+    """
+    params = []
+
+    if category:
+        query += " AND category = ?"
+        params.append(category)
+
+    if difficulty:
+        query += " AND difficulty = ?"
+        params.append(difficulty)
+
+    cursor.execute(query, params)
 
     rows = cursor.fetchall()
 
@@ -104,7 +115,10 @@ def get_learning_quiz():
             "choice_2": row[7],
             "choice_3": row[8],
             "choice_4": row[9],
-            "answer": row[10]
+            "answer": row[10],
+            "answer_explanation": row[11],
+            "weakness_tag": row[12],
+            "learning_goal": row[13]
         })
 
     conn.close()
