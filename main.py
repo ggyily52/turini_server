@@ -97,6 +97,9 @@ def get_learning_quiz(category: str = None, difficulty: str = None):
         query += " AND difficulty = ?"
         params.append(difficulty)
 
+    query += " ORDER BY RANDOM()"
+    query += " LIMIT 15"
+
     cursor.execute(query, params)
 
     rows = cursor.fetchall()
