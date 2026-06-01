@@ -19,7 +19,7 @@ engine = create_engine(DATABASE_URL)
 
 @app.get("/")
 def home():
-    return {"message": "Turini 서버가 실행 중입니다"}
+    return {"message": "Turini Server Running!"}
 
 
 @app.get("/test-db")
